@@ -1,5 +1,7 @@
 # 개발 및 AI 활용 기록
 
+현재 데이터 정책은 문서 끝의 **2026-10-27 — 식당 초기 데이터 정책 최종 변경** 항목을 따른다. 아래 Phase 0 당시의 '전체 식당 자료 필요'·검증 선행 조건은 당시 이력이며 최신 초기 등록 정책이 아니다.
+
 ## 2026-10-27 — Phase 0 조사·설계
 
 ### 범위와 현재 상태
@@ -106,3 +108,49 @@
 Phase 0의 초기화·기본 정적 화면·기본 구조·README/ignore/env 예제·3개 문서·lint/build/typecheck·HTTP 확인·독립 검토를 완료했다. 자동화 단위/E2E·실제 브라우저 시각·외부 서비스 기능 테스트 완료를 의미하지 않는다. Git은 main의 최초 커밋 전 상태다. 커밋 제안은 `chore: initialize yonsei eats foundation`이며, 커밋·push·배포는 수행하지 않았다.
 
 이후 Phase 1(기본 UI)은 사용자 승인 대기다. Phase 2 seed는 사용자 검토 식당 전체 자료가 필요하다. Node 24 재검증, ESLint 지원 버전 갱신, Supabase/NAVER OAuth 프로필·PKCE 검증, Maps 도메인·요금 설정과 실제 배포는 해당 단계의 미완료 항목이다. 현재 lint/build 실패는 없다.
+
+## 2026-10-27 — 식당 초기 데이터 정책 최종 변경
+
+### 사용자 결정과 작업 범위
+
+사용자가 승인한 v2 식당 20곳 전체를 초기 등록한다. 정육면체 제외·오천집 신촌점 포함이며 더도이축산직영점 신촌점을 유지한다. 상세 검증은 개발 완료 후 진행한다. v3 검증 현황 및 v4의 3곳 제한, 주소/출처/현재 영업 미확인을 이유로 한 게시 보류를 초기 등록 기준에서 폐기한다. 기본 카드/상세 표시 자격과 검증 진행도를 분리한다.
+
+이번에는 **데이터·문서만 변경**했다. Phase 1을 시작하지 않았고 UI 로더·카드·검색·필터·상세·지도·DB seed 기능을 구현하지 않았다. 기존 src·패키지·설정·README·환경 파일을 수정하지 않았고 .env 내용은 조회하지 않았다. 실제 외부 서비스 검증·설정·배포·커밋도 수행하지 않았다.
+
+### 생성·수정 파일과 결정
+
+- 신규 `data/restaurants.json`: 활성 초기 데이터. v2의 ID·이름·음식 종류 20개와 원본 참고 URL 4개를 보존했다. 전체 status=approved_initial_data, requiresVerificationForListing=false, 개별 verificationStatus=pending이다.
+- 원본 `data/yonsei-eats-restaurants-v2.json`은 작업 시작부터 존재한 미추적 사용자 파일이며 수정하지 않았다. 원본의 후보/게시 보류 메모는 이력으로만 남기고 활성 데이터 정책이 우선한다. 루트의 별도 v2나 v3/v4 파일은 발견되지 않았다.
+- 필드별 증거가 부족한 주소·좌표·메뉴·가격·영업시간·사진·영업 상태·verifiedAt·프랜차이즈 여부는 활성 JSON에서 null로 처리했다. 원본 주소·날짜·잠정 분류는 v2 보존본에 남겨 정보 손실을 피했다. 원본 링크는 미검증 참고 자료이며 조회/검증 완료를 의미하지 않는다.
+- 신규 `docs/restaurant-data.md`: 식당별 8개 항목(총 160개)의 미완료 체크박스와 필드별 출처·확인 날짜·상태를 갱신할 기록 표. 검증 전에도 20곳 목록/상세 제공, null 표시·필터 의미·지도 마커 제외를 명시했다.
+- 수정 `docs/spec.md`, `docs/implementation-plan.md`: 최종 정책과 이후 단계의 nullable 저장·20곳 seed·검증 독립 표시 조건·좌표 없는 마커 제외를 반영했다. 실제 UI/DB 구현 완료로 표시하지 않았다.
+- 수정 `docs/development-log.md`: 본 기록과 과거 정책의 효력 구분을 추가했다.
+
+### 실제 사용한 도구·스킬
+
+- `exec_command`: AGENTS·Git 상태·관련 데이터/문서/화면 읽기, rg 파일/참조 검색, SHA-256 보존 검사, Node 내장 모듈 기반 JSON 작성/검증, git diff 검사.
+- Superpowers brainstorming을 읽고 적용했다. 사용자가 데이터 기준·null 처리·표시 규칙·작업 범위를 명확히 확정했으므로 별도 제품 기능 설계를 추가하지 않고 지시된 정책만 적용했다. verification-before-completion을 읽고 아래 실제 결과를 확인했다.
+- Caveman surgical-patch 및 cavecrew 스킬을 읽었다. `data_policy_investigator`로 읽기 전용 조사, `data_policy_review`로 독립 최종 검토했다. 둘 다 범용 Codex 서브에이전트이며 네이티브 Cavecrew preset 호출은 아니다. 최종 검토 결과는 No issues였다. 검토자는 20개 원본 ID/상호/종류·200개 null·20개 체크리스트/160개 미완료 항목·UTF-8과 활성 정책 일치를 확인했고 제품 기능 테스트는 실행하지 않았다.
+- `apply_patch`: 명세·계획·개발 기록 수정. JSON/체크리스트는 Node stdin 스크립트로 작성했다. 별도 생성기·의존성·테스트 프레임워크 파일을 추가하지 않았다.
+- Context7은 이번에 호출하지 않았다. 외부 라이브러리/API 사용이나 설정을 변경하지 않는 순수 JSON·문서 작업이므로 최신 라이브러리 문서 조회가 필요하지 않았다. 외부 식당 출처를 방문하거나 상세 검증했다고 주장하지 않는다.
+
+### 발견한 오류와 처리
+
+첫 Node stdin 검증 스크립트에서 PowerShell 기본 파이프 인코딩(us-ascii) 때문에 한글 정규식이 손상되어 SyntaxError가 발생했다. 생성 JSON의 한국어 정책 메모와 체크리스트에도 같은 문제가 있음을 확인했다. 해당 shell 호출에만 OutputEncoding=UTF-8을 설정한 뒤 새로 만든 JSON 메모/체크리스트를 다시 작성하고, 한글 상호 일치·깨진 문자·연속 물음표 검사를 포함하여 재검증했다. 원본 v2와 기존 앱 파일은 영향받지 않았다. 최종 검증은 exit 0이다.
+
+Git은 LF가 향후 CRLF로 변환될 수 있다는 경고를 표시했다. 공백/충돌 검사 실패는 아니며 전역 Git 설정을 변경하지 않았다.
+
+### 실제 검증 결과
+
+Node stdin의 `node:assert/strict` 검사와 `git diff --check`를 실행해 exit 0을 확인했다.
+
+- JSON 파싱, 식당 20곳, 고유 ID·상호 20개, 원본 ID/이름/음식 종류 순서 보존: 통과.
+- 오천집 신촌점·더도이축산직영점 신촌점 포함, 정육면체·담산 제외: 통과.
+- 식당당 10개 미확인 필드 총 200개 null, 개별 pending 상태와 등록 검증 조건 분리: 통과.
+- 원본 참고 URL 4개 보존, 외부 rating 필드 미생성: 통과.
+- 식당별 체크리스트 20개·미완료 체크박스 160개, UTF-8/충돌 마커/행 끝 공백 검사: 통과.
+- 원본 v2 SHA-256은 작업 전후 `96d7b3cb1863905877c434813e72a6dbf42cb8053f0aab81e75a67748ed65796`으로 동일하다.
+- `git diff --exit-code HEAD -- src public package.json package-lock.json README.md AGENTS.md next.config.ts tsconfig.json eslint.config.mjs`: exit 0, 기존 제품 코드·패키지·설정 변경 없음.
+- 유효 좌표 쌍은 0곳이다. 향후 지도 구현 시 현재 데이터에서 생성 가능한 마커도 0개이며 20곳의 목록/상세 자격은 유지한다. 실제 지도/UI 실행을 검증한 것은 아니다.
+
+이번 작업에서는 lint·build·TypeScript·브라우저·DB·OAuth·지도 테스트를 다시 실행하지 않았다. 데이터 파일은 아직 화면에서 import하지 않으므로 JSON/문서 무결성과 기존 파일 보존을 검증 범위로 삼았다. 위 Phase 0의 lint/build 통과는 과거 실행 결과다.

@@ -13,7 +13,8 @@
 ## 공통 제약
 
 - Phase 0 이후 자동 진입 금지. 아래 Phase 1~7은 승인 전 실행하지 않는 로드맵이다.
-- 식당 데이터 20곳은 사용자 검토 자료만 사용한다. 미확인 데이터와 외부 평점을 생성하지 않는다.
+- 초기 등록은 사용자 승인 v2 기반 `data/restaurants.json`의 20곳 전체이다. 정육면체 제외·오천집 신촌점 포함. 상세 검증은 개발 완료 후 진행하며 v3/v4의 검증/3곳 제한은 등록 조건에서 제외한다.
+- 미확인 주소·좌표·메뉴·가격·영업시간·사진·현재 영업 상태는 null이다. 외부 평점·가상 상세값을 생성하지 않는다. 검증 상태로 기본 카드·상세 전체를 숨기지 않는다.
 - 사용자별 최신 리뷰 한 건만 평균에 반영하며 리뷰 없음은 NULL이다.
 - 일반 사용자는 식당 데이터를 수정할 수 없다. 모든 public 테이블에 RLS를 적용한다.
 - 비밀 값은 환경 파일/서비스 설정에만 보관하고 공개 변수에 service role을 넣지 않는다.
@@ -49,12 +50,14 @@
 
 ## Phase 1: 기본 UI
 
+2026-10-27 정책 변경: 이번 작업은 데이터·문서만 정리했다. 아래 UI 및 이후 단계 기능은 이번에 구현하지 않는다.
+
 **파일:** src/components/{site-header,restaurant-card,filter-bar,view-switch}.tsx, src/app/{page,layout}.tsx, src/app/globals.css, tests/ui/restaurant-card.test.tsx, tests/e2e/home.spec.ts.
 
-**입출력:** 승인된 UI 모델 RestaurantSummary(id,name,category,price:number|null,rating:number|null,reviewerCount:number). 실제 API는 Phase 3 연결.
+**입출력:** `data/restaurants.json`의 승인된 20곳을 UI 모델 RestaurantSummary(id,name,category,price:number|null,rating:number|null,reviewerCount:number)로 매핑할 준비가 되어 있다. JSON의 representativePrice를 UI price로 변환하고 자체 리뷰 전 rating=null을 사용한다. 실제 로더·화면 연결은 Phase 1/3에서 구현한다.
 
-- [ ] 카드/빈 상태/미확인 가격/리뷰 없음·키보드 포커스 테스트를 먼저 작성하고 실패 확인.
-- [ ] 지정 색상과 반응형 grid, 검색·필터 입력·보기 전환 구성. 데이터 없을 때 가상 식당 대신 빈 상태 사용.
+- [ ] pending 상태·주소/가격/좌표 null인 식당도 기본 카드에 표시되는 테스트와 '정보 확인 중'·'아직 리뷰 없음'·키보드 포커스 테스트부터 작성.
+- [ ] 지정 색상과 반응형 grid, 검색·필터 입력·보기 전환 구성. 승인된 20곳을 사용하며 v3/v4 제한이나 verified-only 조건을 넣지 않음. 데이터 파일 자체가 비었을 때만 빈 상태 사용.
 - [ ] 375px/1280px, 키보드 이동, 대비·라벨·overflow 검증 후 lint/build.
 
 **완료:** 모바일 1열·PC 다열, 기능 상태가 명확하고 비활성 동작을 성공처럼 표시하지 않음. 검토 가능한 UI 제공.
@@ -65,17 +68,17 @@
 
 **파일:** supabase/config.toml, supabase/migrations/<timestamp>_initial_schema.sql, supabase/seed.sql, supabase/tests/{rls,ratings}.sql, src/types/database.ts, docs/restaurant-data.md.
 
-**입출력:** 승인 식당 자료를 restaurants/menus에 저장하고 RestaurantSummary 조회 인터페이스 제공. reviews의 rating은 1~5 정수, 사용자·식당·작성 시각은 수정 불가.
+**입출력:** 활성 JSON의 20곳 모두를 restaurants 초기 데이터로 변환하고 확인된 메뉴가 있을 때만 menus에 저장한다. 주소·좌표·가격·영업시간 등은 nullable로 설계하며 가짜 필수값을 요구하지 않는다. RestaurantSummary 조회 인터페이스를 제공한다. reviews의 rating은 1~5 정수, 사용자·식당·작성 시각은 수정 불가.
 
 - [ ] 최신 기준(created_at/id), 대표 메뉴 가격·필터 구간, 추천 태그·길이 제한을 사용자와 확정.
 - [ ] 로컬 DB에서 7개 논리 테이블·FK·CHECK·인덱스·RLS 실패 테스트 작성.
 - [ ] schema/RLS/최소 공개 조회와 최신 리뷰 집계 구현. review_tag_links 소유권도 부모 리뷰로 확인.
 - [ ] 익명/A/B, 소유자 위조, 즐겨찾기 격리, 식당 쓰기 거부, 반복 리뷰·동률·수정·삭제 복귀·NULL 집계 테스트.
-- [ ] 승인된 20곳만 출처·확인일과 seed 작성. 자료가 없으면 이 항목은 완료 처리하지 않음.
+- [ ] `data/restaurants.json`의 ID/이름 20곳을 보존한 seed를 작성. 상세 검증 상태는 등록 차단 조건이 아니며 미확인 값·확인일은 null 유지. 식당별 검증 기록은 docs/restaurant-data.md에서 개발 완료 후 별도 갱신.
 
-**완료:** 로컬 migration 재현, RLS/집계 테스트 통과, 승인 데이터 수·제외 규칙 확인. 실제 DB 적용은 변경 성격에 따라 승인.
+**완료:** 로컬 migration 재현, RLS/집계 테스트 통과, 승인 20곳 seed·null 보존 확인. 상세 검증 완료는 초기 등록의 선행 조건이 아니다. 실제 DB 적용은 변경 성격에 따라 승인.
 
-**사용자 설정:** Supabase 프로젝트/개발 환경, 사용자 검토 식당 20곳의 주소·좌표·메뉴·가격·출처. 비밀 값은 채팅·Git에 공유하지 않음.
+**사용자 설정:** Supabase 프로젝트/개발 환경. 식당 20곳 이름 승인은 완료됐으며 주소·좌표·메뉴·가격·출처의 상세 검증은 개발 완료 후 후속 작업이다. 비밀 값은 채팅·Git에 공유하지 않음.
 
 ## Phase 3: 목록·검색·필터·상세
 
@@ -83,9 +86,9 @@
 
 **입출력:** parseRestaurantFilters(URLSearchParams): RestaurantFilters; listRestaurants(filters): Promise<RestaurantSummary[]>; getRestaurant(id): Promise<RestaurantDetail|null>. 필드 타입은 Phase 2 generated DB 타입과 일치시킨다.
 
-- [ ] 이름/메뉴 검색·AND 복합 필터·공백·한글·가격 경계·NULL·잘못된 query 테스트를 RED로 작성.
+- [ ] 이름/메뉴 검색·AND 복합 필터·공백·한글·가격 경계·NULL·잘못된 query 테스트를 RED로 작성. 검증 상태가 pending이어도 기본 목록/상세는 제공하고 가격 조건이 없으면 null 가격도 유지. 메뉴 null이어도 이름 검색 가능.
 - [ ] 서버 검증 query와 URL 상태 보존 구현. 필터 값은 allowlist/유효 범위 검사.
-- [ ] 상세 404, 로딩·오류·빈 결과, 새로고침·뒤로가기·목록 복귀 E2E.
+- [ ] 20곳 ID 모두 상세 조회, 잘못된 ID 404, 미확인 정보 안내/숨김, 미확인 영업 상태를 '영업 중'으로 표시하지 않는 테스트. 로딩·오류·빈 결과, 새로고침·뒤로가기·목록 복귀 E2E.
 
 **완료:** 승인 데이터의 목록·검색·필터·상세가 일관되고 자체 평점이 없는 식당을 명확히 구분.
 
@@ -97,7 +100,7 @@
 
 **입출력:** RestaurantMap({restaurants: RestaurantSummaryWithCoordinates[], selectedId?: string}); 지도와 목록은 동일 URL 필터 결과 소비.
 
-- [ ] SDK 로딩 오류·키 부재·좌표 부재·보기 전환 상태 보존·길찾기 URL 인코딩 테스트 RED.
+- [ ] SDK 로딩 오류·키 부재·좌표 부재·보기 전환 상태 보존·길찾기 URL 인코딩 테스트 RED. 유효한 좌표 쌍 없는 식당은 마커/좌표 기반 길찾기 생성 금지, 목록/상세는 유지하고 '위치 확인 중' 안내.
 - [ ] 공식 v3 API를 client에서 로딩하고 마커 cleanup/중복 script 방지 구현.
 - [ ] 도메인 제한된 개발 키로 실제 지도와 PC/모바일 외부 길찾기 확인.
 
