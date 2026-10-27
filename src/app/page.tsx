@@ -1,38 +1,22 @@
-﻿export default function Home() {
+import { RestaurantExplorer } from "@/components/restaurant-explorer";
+import { getCategories, restaurants } from "@/lib/restaurants";
+
+type Props = { searchParams: Promise<{ q?: string | string[]; category?: string | string[] }> };
+
+export default async function Home({ searchParams }: Props) {
+  const params = await searchParams;
+  const query = typeof params.q === "string" ? params.q : "";
+  const requestedCategory = typeof params.category === "string" ? params.category : "";
+  const category = getCategories(restaurants).includes(requestedCategory) ? requestedCategory : "";
   return (
-    <div className="min-h-screen bg-white">
-      <header className="border-b border-slate-200">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-6 py-6">
-          <span className="text-2xl font-bold tracking-tight text-navy">연세잇츠</span>
-          <span className="text-sm text-slate-500" lang="en">Yonsei Eats</span>
-        </div>
-      </header>
-      <main className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-        <p className="mb-4 text-sm font-semibold tracking-wide text-brand-blue">
-          연세대학교 신촌캠퍼스 주변 맛집
-        </p>
-        <h1 className="max-w-2xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-          오늘의 한 끼,
-          <br />
-          연세잇츠에서 찾아요.
-        </h1>
-        <p className="mt-6 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
-          가격과 음식 종류, 직접 남긴 리뷰를 바탕으로
-          나에게 맞는 식당을 찾을 수 있도록 준비하고 있어요.
-        </p>
-        <section aria-labelledby="preparation-heading" className="mt-12 rounded-3xl border border-slate-200 bg-surface p-6 sm:p-8">
-          <h2 id="preparation-heading" className="text-xl font-semibold text-navy">
-            식당 정보를 준비하고 있어요
-          </h2>
-          <p className="mt-3 max-w-2xl leading-7 text-slate-600">
-            신촌의 식당을 꼼꼼히 확인하고 있습니다.
-            검토를 마친 식당 정보가 준비되면 이곳에서 만나보세요.
-          </p>
-        </section>
-      </main>
-      <footer className="mx-auto max-w-6xl px-6 pb-8 text-sm text-slate-500">
-        연세잇츠 · Yonsei Eats
-      </footer>
-    </div>
+    <main id="main-content" className="mx-auto w-full max-w-6xl flex-1 px-5 sm:px-8">
+      <section className="py-12 sm:py-20" aria-labelledby="intro-heading">
+        <p className="mb-4 text-sm font-semibold tracking-wide text-link-blue">YONSEI EATS · 신촌의 한 끼</p>
+        <h1 id="intro-heading" className="max-w-3xl break-keep text-4xl font-bold leading-tight tracking-tight text-navy sm:text-5xl">오늘 뭐 먹지?<br /><span className="text-brand-blue">연세잇츠</span>에서 찾아요.</h1>
+        <p className="mt-6 max-w-xl break-keep text-base leading-8 text-slate-600">연세대학교 신촌캠퍼스 주변 식당 20곳.<br className="hidden sm:block" /> 가고 싶은 식당을 검색하고, 끌리는 음식으로 골라 보세요.</p>
+        <div className="mt-6 flex flex-wrap gap-2 text-xs text-slate-600"><span className="rounded-full bg-surface px-3 py-2">신촌캠퍼스 주변</span><span className="rounded-full bg-surface px-3 py-2">이름으로 빠르게 검색</span><span className="rounded-full bg-surface px-3 py-2">취향에 맞는 음식 종류</span></div>
+      </section>
+      <RestaurantExplorer key={JSON.stringify([query, category])} restaurants={restaurants} initialQuery={query} initialCategory={category} />
+    </main>
   );
 }

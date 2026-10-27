@@ -52,13 +52,15 @@
 
 2026-10-27 정책 변경: 이번 작업은 데이터·문서만 정리했다. 아래 UI 및 이후 단계 기능은 이번에 구현하지 않는다.
 
-**파일:** src/components/{site-header,restaurant-card,filter-bar,view-switch}.tsx, src/app/{page,layout}.tsx, src/app/globals.css, tests/ui/restaurant-card.test.tsx, tests/e2e/home.spec.ts.
+후속 사용자 Phase 1 지시로 아래 UI와 로컬 데이터 검색·필터·기본 상세까지 구현 범위가 확장 승인되었다. 과거 '이번 작업'은 데이터 정책 변경 당시의 이력이다. 현재 단계의 세부 설계·파일·검증 계획은 [phase1-plan.md](./phase1-plan.md)를 따른다. DB 기반 Phase 2/3와 지도·OAuth는 아직 실행하지 않는다.
+
+**구현 파일:** src/components/{site-header,restaurant-card,restaurant-explorer}.tsx, src/lib/restaurants.ts, src/app/{page,layout,not-found}.tsx, src/app/restaurants/[id]/page.tsx, src/app/globals.css, tests/{restaurants.test,http-smoke,browser-smoke}.mjs. 기존 예상 filter-bar/view-switch는 작은 explorer 안에 두었으며 외부 UI/테스트 라이브러리는 추가하지 않았다.
 
 **입출력:** `data/restaurants.json`의 승인된 20곳을 UI 모델 RestaurantSummary(id,name,category,price:number|null,rating:number|null,reviewerCount:number)로 매핑할 준비가 되어 있다. JSON의 representativePrice를 UI price로 변환하고 자체 리뷰 전 rating=null을 사용한다. 실제 로더·화면 연결은 Phase 1/3에서 구현한다.
 
-- [ ] pending 상태·주소/가격/좌표 null인 식당도 기본 카드에 표시되는 테스트와 '정보 확인 중'·'아직 리뷰 없음'·키보드 포커스 테스트부터 작성.
-- [ ] 지정 색상과 반응형 grid, 검색·필터 입력·보기 전환 구성. 승인된 20곳을 사용하며 v3/v4 제한이나 verified-only 조건을 넣지 않음. 데이터 파일 자체가 비었을 때만 빈 상태 사용.
-- [ ] 375px/1280px, 키보드 이동, 대비·라벨·overflow 검증 후 lint/build.
+- [x] pending/null 식당도 표시하는 단위/SSR/브라우저 검사와 '정보 확인 중'·'아직 리뷰 없음' 확인. 입력 포커스 검사 수행.
+- [x] 지정 색상과 반응형 grid, 이름 검색·원본 종류 필터·AND·초기화·결과 수·빈 상태·기본 상세/404 구현. 지도 전환/로그인/가격·평점 필터는 준비 중 disabled. verified-only 제한 없음.
+- [x] Edge headless의 375px/1280px 1열/3열·overflow·입력 포커스 및 작은 파란 글씨 대비 회귀 검사, lint/typecheck/build 통과. 전체 키보드/스크린리더·실제 모바일 기기는 미검증.
 
 **완료:** 모바일 1열·PC 다열, 기능 상태가 명확하고 비활성 동작을 성공처럼 표시하지 않음. 검토 가능한 UI 제공.
 
