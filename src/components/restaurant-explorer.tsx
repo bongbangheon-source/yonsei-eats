@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { filterRestaurants, getCategories, type Restaurant } from "@/lib/restaurants";
 import { RestaurantCard } from "./restaurant-card";
+import { ViewLink } from "./view-link";
 
-type Props = { restaurants: readonly Restaurant[]; initialQuery: string; initialCategory: string };
+type Props = { restaurants: readonly Restaurant[]; initialQuery: string; initialCategory: string; loggedIn?: boolean; favoriteIds?: string[]; favoritesUnavailable?: boolean };
 
-export function RestaurantExplorer({ restaurants, initialQuery, initialCategory }: Props) {
+export function RestaurantExplorer({ restaurants, initialQuery, initialCategory, loggedIn = false, favoriteIds = [], favoritesUnavailable = false }: Props) {
   const [query, setQuery] = useState(initialQuery);
   const [category, setCategory] = useState(initialCategory);
   const root = useRef<HTMLElement>(null);
@@ -54,6 +55,7 @@ export function RestaurantExplorer({ restaurants, initialQuery, initialCategory 
           </div>
         </fieldset>
         <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-slate-100 pt-5">
+          <ViewLink target="/map" />
           <button type="button" disabled data-preparing className="cursor-not-allowed rounded-xl bg-surface px-3 py-2 text-xs text-slate-500">가격 필터 · 데이터 준비 중</button>
           <button type="button" disabled data-preparing className="cursor-not-allowed rounded-xl bg-surface px-3 py-2 text-xs text-slate-500">평점 필터 · 데이터 준비 중</button>
           <button type="button" data-reset-filters onClick={() => updateFilters("", "")} className="ml-auto min-h-11 rounded-xl px-3 py-2 text-sm font-medium text-slate-600 underline decoration-slate-300 underline-offset-4 hover:text-link-blue focus-visible:outline-2 focus-visible:outline-brand-blue">필터 초기화</button>
@@ -65,7 +67,7 @@ export function RestaurantExplorer({ restaurants, initialQuery, initialCategory 
       </div>
       {results.length ? (
         <div data-restaurant-grid className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {results.map(restaurant => <RestaurantCard key={restaurant.id} restaurant={restaurant} />)}
+          {results.map(restaurant => <RestaurantCard key={restaurant.id} restaurant={restaurant} loggedIn={loggedIn} favorite={favoritesUnavailable ? null : favoriteIds.includes(restaurant.id)} next={`/?${new URLSearchParams({ q: query, category })}`} />)}
         </div>
       ) : (
         <div className="rounded-3xl border border-dashed border-slate-300 bg-surface px-6 py-16 text-center">

@@ -1,0 +1,44 @@
+[
+  {
+    "file": "home-desktop.png",
+    "status": "copied",
+    "environment": "local 127.0.0.1:3000; not production",
+    "sourcePhase": 5
+  },
+  {
+    "file": "home-mobile.png",
+    "status": "copied",
+    "environment": "local 127.0.0.1:3000; not production",
+    "sourcePhase": 5
+  },
+  {
+    "file": "login-mobile.png",
+    "status": "copied",
+    "environment": "local 127.0.0.1:3000; not production",
+    "sourcePhase": 3
+  },
+  {
+    "file": "signup-desktop.png",
+    "status": "copied",
+    "environment": "local 127.0.0.1:3000; not production",
+    "sourcePhase": 3
+  },
+  {
+    "file": "detail-mobile.png",
+    "status": "copied",
+    "environment": "local 127.0.0.1:3000; not production",
+    "sourcePhase": 4
+  },
+  {
+    "file": "map-desktop.png",
+    "status": "copied",
+    "environment": "local 127.0.0.1:3000; not production",
+    "sourcePhase": 5
+  },
+  {
+    "file": "map-mobile.png",
+    "status": "copied",
+    "environment": "local 127.0.0.1:3000; not production",
+    "sourcePhase": 5
+  }
+]

@@ -1,5 +1,15 @@
 # Yonsei Eats Implementation Plan
 
+## 현재 단계 우선 정책 — 2026-10-28
+
+현재 사용자 승인 범위는 Phase6 배포 전 검증·안전한stage·GitHub/Vercel 준비·과제 문서다. [phase6-plan.md](./phase6-plan.md), [deployment.md](./deployment.md)를 따른다. 실제commit/push/프로젝트연결/배포/운영설정은 별도 승인 후 수행하고, 현재DB와기능은유지한다. 아래 Phase1~5 자동진행금지는 각 시점의 이력이다.
+
+현재작업은사용자승인Phase5지도다. [phase5-plan.md](./phase5-plan.md)의파일별계획과[phase5-location-audit.md](./phase5-location-audit.md)의20곳근거를따른다. 확인된2곳만비파괴위치SQL로사용자승인후반영하고실제SDK/타일/마커/필터·반응형을검사한다. NAVER키는브라우저공개ID만,인증/지도오류는명확히안내한다. 기존Phase1~4·원본데이터보존,Phase6/commit/push/배포자동진행금지.
+
+Phase 4 사용자 지시가 아래 Phase 3/최초 로드맵보다 우선한다. 리뷰·실제 태그·즐겨찾기·마이페이지 목록은 [phase4-plan.md](./phase4-plan.md), 신규 SQL 적용 경계는 [phase4-db-review.md](./phase4-db-review.md)를 따른다. 기존7테이블/RLS/평점집계는 유지하며 save_review 원자 RPC와 최소닉네임projection을 승인 후 추가한다. npm test/lint/typecheck/build/db 및 실제익명UI검사를 수행하고, 원격계정쓰기/RLS 미수행은 완료로 표시하지 않는다. Phase 5/지도/배포는 자동 진행하지 않는다.
+
+사용자 Phase 3 지시로 Google/NAVER OAuth를 취소하고 이메일·비밀번호 인증·세션·본인 프로필·마이페이지를 구현한다. 아래 최초 로드맵의 단계 번호는 이력이며 현재 작업 순서보다 우선하지 않는다. 현재 파일별 계획·완료 기준은 [phase3-plan.md](./phase3-plan.md), Dashboard 설정과 수동 통합 검사는 [auth-setup.md](./auth-setup.md)를 따른다. Phase 4는 리뷰·즐겨찾기 예정이며 별도 승인 전 진행하지 않는다. 지도·배포도 이번 범위 밖이다.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Code investigation and independent reviews use generic Codex agents with Cavecrew output contracts where useful; native presets are not available.
 
 **Goal:** Phase 0에서는 실행 가능한 최소 Next.js 기반과 검토 가능한 문서를 준비한다. 이후 별도 승인된 단계에서 MVP를 구축한다.
@@ -68,6 +78,10 @@
 
 ## Phase 2: Supabase 스키마·RLS·초기 데이터
 
+2026-10-28 사용자 지시로 이 단계만 실행 승인. 세부 실행 계획은 [phase2-plan.md](./phase2-plan.md), 실제 원격 적용 전 검토/설정은 [supabase-setup.md](./supabase-setup.md)를 따른다. 로컬 SDK 조회 계층 연결은 이번 범위에 포함하되 실제 원격 migration/seed는 별도 승인 전 실행 금지다. CLI/Docker가 없는 현재 환경에서는 PGlite PostgreSQL 엔진으로 SQL/RLS를 검증하고 실제 Supabase Auth/JWT/HTTP 검증은 분리한다.
+
+현재 상태: SQL/seed/서버 조회 계층·오류 안내 구현, 로컬 PostgreSQL·repository 회귀와 기존 production UI 검사 완료. 원격 환경 설정/적용/실제 Auth·PostgREST 검증은 승인 대기다. generated database.ts는 원격 스키마 적용 후 생성 대상으로 남기고 현재는 공개 조회 응답 검증·타입 매핑을 사용한다. 아래 기존 체크리스트는 호스팅 환경 최종 수용까지 포함하며 로컬 통과만으로 원격 항목을 완료 처리하지 않는다.
+
 **파일:** supabase/config.toml, supabase/migrations/<timestamp>_initial_schema.sql, supabase/seed.sql, supabase/tests/{rls,ratings}.sql, src/types/database.ts, docs/restaurant-data.md.
 
 **입출력:** 활성 JSON의 20곳 모두를 restaurants 초기 데이터로 변환하고 확인된 메뉴가 있을 때만 menus에 저장한다. 주소·좌표·가격·영업시간 등은 nullable로 설계하며 가짜 필수값을 요구하지 않는다. RestaurantSummary 조회 인터페이스를 제공한다. reviews의 rating은 1~5 정수, 사용자·식당·작성 시각은 수정 불가.
@@ -110,18 +124,13 @@
 
 **사용자 설정:** NAVER Cloud Maps 신청과 브라우저 Key ID, localhost·확정 배포 도메인 등록. 유료 설정은 승인 후.
 
-## Phase 5: Google·네이버 OAuth
+## 과거 Phase 5: Google·네이버 OAuth — 취소됨
 
 **파일:** src/app/auth/{callback/route.ts,actions.ts}, src/app/login/page.tsx, src/proxy.ts, src/lib/supabase/{client,server,proxy}.ts, docs/oauth-setup.md, tests/e2e/auth.spec.ts.
 
 **입출력:** Supabase의 검증된 auth.users UUID를 이후 reviews/favorites 소유자로 사용. 로그인 공급자 token을 DB 권한으로 직접 사용하지 않는다.
 
-- [ ] Context7으로 Google·SSR·custom OAuth 기능 및 설치 SDK를 재확인.
-- [ ] 동의 거절·잘못된 state·callback 재사용·외부 redirect·만료/변조 cookie·이메일 부재 테스트 RED.
-- [ ] Google 공식 제공자와 cookie 기반 SSR/Proxy 구성.
-- [ ] 네이버 generic custom OAuth2의 중첩 profile 매핑·PKCE·token 파라미터·동의 범위를 검증. callback/세션 발급을 실제로 확인하기 전 지원 완료로 표시하지 않음.
-- [ ] 불가능하면 중개/커스텀 대안 설계와 중대한 인증 변경 승인을 요청. MVP에서 네이버를 말없이 제외하지 않음.
-- [ ] 인증된 실제 계정으로 로그인/새로고침/로그아웃 및 공급자별 계정 연결 정책 검증.
+이 절은 취소된 최초 계획의 이력이다. 현재 인증은 Phase 3 이메일·비밀번호 SSR로 대체하며 위의 문서가 우선한다. OAuth 앱 생성·공급자·PKCE 매핑 작업은 수행하지 않는다.
 
 **완료:** 두 공급자 실제 로그인과 RLS 사용자 식별 일치, open redirect·CSRF·계정 병합 위험 통제.
 

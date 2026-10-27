@@ -12,6 +12,9 @@ export type Restaurant = Readonly<{
   openingHours: string | null;
   photoUrl: string | null;
   operatingStatus: string | null;
+  averageRating?: number | null;
+  reviewerCount?: number;
+  reviewCount?: number;
 }>;
 
 export const restaurants: readonly Restaurant[] = data.restaurants;

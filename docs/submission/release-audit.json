@@ -1,0 +1,9 @@
+{
+  "mode": "staged-bytes",
+  "filesChecked": 105,
+  "actualValuesCompared": 3,
+  "findings": [],
+  "historyAudit": "Separate read-only audit checked 159 prior blobs and archive contents; no actual environment values/private keys/tokens found.",
+  "approvedPrivacyException": "User explicitly permitted original author-email metadata and old PDF/ZIP local-path metadata while preserving history. Actual values omitted.",
+  "binaryScope": "Exact-value/pattern scan of raw bytes; previous archive/PDF audit is separate. No blanket OCR claim."
+}

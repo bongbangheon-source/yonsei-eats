@@ -1,0 +1,311 @@
+{
+  "checkedAt": "2026-10-28",
+  "policy": "위치 검증만 기록. DB 행과 정확히 일치할 때만 마커 허용. 기존 JSON/seed 원본 보존.",
+  "locations": [
+    {
+      "id": "sinchon-01",
+      "name": "라구식당",
+      "status": "conflict",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "주소 42-24/42-28 자료 충돌 및 공식 좌표 미확인",
+      "reviewSources": [
+        "https://www.instagram.com/ragu_pasta/",
+        "https://www.placeview.co.kr/id/MjY5NzY1MjYg"
+      ]
+    },
+    {
+      "id": "sinchon-02",
+      "name": "오천집 신촌점",
+      "status": "pending",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "신촌점/신촌본점 지점 표기 확인과 공식 좌표 필요",
+      "reviewSources": [
+        "https://www.daangn.com/kr/local-profile/%EC%98%A4%EC%B2%9C%EC%A7%91-%EC%8B%A0%EC%B4%8C%EB%B3%B8%EC%A0%90-8dwty2sfyoz5/"
+      ]
+    },
+    {
+      "id": "sinchon-03",
+      "name": "카츠업",
+      "status": "pending",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "공식 브랜드 본사 주소를 매장 주소로 사용할 수 없음; 매장 좌표 미확인",
+      "reviewSources": [
+        "https://katsup.co.kr/"
+      ]
+    },
+    {
+      "id": "sinchon-04",
+      "name": "카라멘야",
+      "status": "pending",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "민간 후보만 확인; 공식 좌표 미확인",
+      "reviewSources": [
+        "https://www.tabling.co.kr/restaurant/9048"
+      ]
+    },
+    {
+      "id": "sinchon-05",
+      "name": "소바연구소",
+      "status": "verified",
+      "address": "서울 서대문구 명물길 50-9 (창천동)",
+      "latitude": 37.5587750739815,
+      "longitude": 126.939459409798,
+      "sourceName": "소바연구소 신촌본점",
+      "sourceUrl": "https://korean.visitseoul.net/area/SobaLabSinchon/KOP1kjvs6",
+      "checkedAt": "2026-10-28",
+      "reason": "서울 공식 관광정보의 식당별 길찾기 함수와 data-map 좌표가 일치함. 현재 영업 상태 확인은 아님.",
+      "reviewSources": [
+        "https://korean.visitseoul.net/area/SobaLabSinchon/KOP1kjvs6"
+      ]
+    },
+    {
+      "id": "sinchon-06",
+      "name": "고삼이",
+      "status": "pending",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "민간 후보만 확인; 공식 좌표 미확인",
+      "reviewSources": [
+        "https://www.diningcode.com/profile.php?rid=Q2aMjuw2lv7M"
+      ]
+    },
+    {
+      "id": "sinchon-07",
+      "name": "오향미엔",
+      "status": "pending",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "사업자 등록주소와 매장주소 구분 필요; 공식 좌표 미확인",
+      "reviewSources": [
+        "https://www.diningcode.com/profile.php?rid=gD0zxU8m5QWc"
+      ]
+    },
+    {
+      "id": "sinchon-08",
+      "name": "꼬숑돈까스",
+      "status": "verified",
+      "address": "서울 서대문구 명물1길 2 (창천동)",
+      "latitude": 37.557838918578,
+      "longitude": 126.937349643274,
+      "sourceName": "꼬숑돈까스",
+      "sourceUrl": "https://korean.visitseoul.net/restaurants/CochonTonkatsu/KOPf7618z",
+      "checkedAt": "2026-10-28",
+      "reason": "서울 공식 관광정보의 식당별 길찾기 함수와 data-map 좌표가 일치함. 현재 영업 상태 확인은 아님.",
+      "reviewSources": [
+        "https://korean.visitseoul.net/restaurants/CochonTonkatsu/KOPf7618z"
+      ]
+    },
+    {
+      "id": "sinchon-09",
+      "name": "야바이",
+      "status": "pending",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "NAVER Place 도구 접근 제한/HTTP429; 공식 좌표 미확인",
+      "reviewSources": [
+        "https://m.place.naver.com/restaurant/13564299/home"
+      ]
+    },
+    {
+      "id": "sinchon-10",
+      "name": "완차이",
+      "status": "pending",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "공식 서울관광 페이지 웹방화벽 차단; 좌표 미확인",
+      "reviewSources": [
+        "https://korean.visitseoul.net/restaurants/%EC%99%84%EC%B0%A8%EC%9D%B4/KOP012577"
+      ]
+    },
+    {
+      "id": "sinchon-11",
+      "name": "소신이쏘 신촌본점",
+      "status": "pending",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "사업자 제공 채용공고 주소는 있으나 신촌본점 현재 주소·공식 좌표 추가 확인 필요",
+      "reviewSources": [
+        "https://www.alba.co.kr/job/Detail?adid=146973224"
+      ]
+    },
+    {
+      "id": "sinchon-12",
+      "name": "유닭스토리 닭한마리",
+      "status": "pending",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "공식 관광공사 신촌점 항목과 NAVER ID13440707 확인; NAVER429/상세응답500으로 좌표 미확보",
+      "reviewSources": [
+        "https://korean.visitkorea.or.kr/detail/ms_detail.do?cotid=4c78b9ce-4689-4bc4-bd54-95874d40491c"
+      ]
+    },
+    {
+      "id": "sinchon-13",
+      "name": "여우골초밥",
+      "status": "pending",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "공식 관광공사 여우골은 홍대 지점 자료로 보여 신촌 식당에 대입할 수 없음",
+      "reviewSources": [
+        "https://www.diningcode.com/profile.php?rid=X7qDhoNWtHYX",
+        "https://big5chinese.visitkorea.or.kr/svc/contents/infoHtmlView.do?vcontsId=138462"
+      ]
+    },
+    {
+      "id": "sinchon-14",
+      "name": "평안도식당",
+      "status": "pending",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "신촌점 민간 주소 후보만 확인; 공식 지점·좌표 미확보",
+      "reviewSources": [
+        "https://superchart.com/ko/stores/pyeongando-sikdang-sinchon/"
+      ]
+    },
+    {
+      "id": "sinchon-15",
+      "name": "공복식당",
+      "status": "pending",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "민간 주소 후보만 확인; 공식 지도 근거 미확보",
+      "reviewSources": [
+        "https://www.diningcode.com/profile.php?rid=Mk0uoz3Po7VO"
+      ]
+    },
+    {
+      "id": "sinchon-16",
+      "name": "춘천집 닭갈비 막국수",
+      "status": "conflict",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "관광공사 연세로5가길1과 민간 연세로5가길8 자료 충돌; 공식 좌표도 반영 보류",
+      "reviewSources": [
+        "https://english.visitkorea.or.kr/svc/contents/contentsView.do?menuSn=352&vcontsId=86497",
+        "https://new.emmaru.com/matzip/matzip.do?code=M170703140912931263L&f=1&s=0&t=0"
+      ]
+    },
+    {
+      "id": "sinchon-17",
+      "name": "더도이축산직영점 신촌점",
+      "status": "pending",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "사용자 링크와 NAVER Place1910033423 일치 및 사업장 좌표 후보 확보. 원문 전체명칭/주소 문자 인코딩 재확인 부족; 후속429로 중단하여 수동 확인 대기",
+      "reviewSources": [
+        "https://naver.me/GctrAcmo",
+        "https://m.place.naver.com/restaurant/1910033423/home"
+      ]
+    },
+    {
+      "id": "sinchon-18",
+      "name": "키친봄날",
+      "status": "pending",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "기사·민간 주소 후보와 사업장SNS는 있으나 공식 현재 위치·정확 좌표 미확보",
+      "reviewSources": [
+        "https://www.esquirekorea.co.kr/article/53731"
+      ]
+    },
+    {
+      "id": "sinchon-19",
+      "name": "미분당 신촌본점",
+      "status": "pending",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "신촌본점·신촌2호점 구분 필요. 공식 브랜드 사이트502/접근불가, 현재 좌표 미확보",
+      "reviewSources": [
+        "https://mifendang.com"
+      ]
+    },
+    {
+      "id": "sinchon-20",
+      "name": "백소정 신촌점",
+      "status": "pending",
+      "address": null,
+      "latitude": null,
+      "longitude": null,
+      "sourceName": null,
+      "sourceUrl": null,
+      "checkedAt": "2026-10-28",
+      "reason": "본사 페이지는 확인했으나 연결 브랜드 사이트 준비중; 신촌점 공식 좌표 미확보",
+      "reviewSources": [
+        "https://cnbcorp.co.kr/baeksojeong",
+        "https://www.baeksojeong-official.com/"
+      ]
+    }
+  ]
+}

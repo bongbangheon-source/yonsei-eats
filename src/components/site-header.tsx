@@ -1,6 +1,11 @@
 import Link from "next/link";
+import { getAuthContext } from "@/lib/auth/session";
+import { LogoutForm } from "./auth-forms";
+import { LoginLink } from "./login-link";
+import { ViewLink } from "./view-link";
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const { user, unavailable } = await getAuthContext();
   return (
     <header className="border-b border-slate-200 bg-white">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-5 px-5 py-5 sm:px-8">
@@ -12,9 +17,10 @@ export function SiteHeader() {
           </span>
         </Link>
         <nav aria-label="주요 메뉴" className="flex flex-wrap items-center gap-3 text-sm sm:gap-6">
-          <Link href="/#restaurants" className="rounded-lg py-2 font-semibold text-navy focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue">식당 탐색</Link>
-          <button type="button" disabled data-preparing className="cursor-not-allowed py-2 text-slate-500">지도 보기 <span className="text-xs">· 준비 중</span></button>
-          <button type="button" disabled data-preparing className="cursor-not-allowed rounded-xl border border-slate-200 px-3 py-2 text-slate-500">로그인 <span className="text-xs">· 준비 중</span></button>
+          <ViewLink target="/" />
+          <ViewLink target="/map" />
+          {user ? <><Link href="/mypage" className="rounded-lg py-2 font-semibold text-navy">마이페이지</Link><LogoutForm /></> : <LoginLink />}
+          {unavailable && <span role="status" className="text-xs text-slate-500">인증 상태 확인 불가</span>}
         </nav>
       </div>
     </header>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatPrice, type Restaurant } from "@/lib/restaurants";
+import { FavoriteButton } from "./community-forms";
 
 export function RestaurantPlaceholder({ className = "" }: { className?: string }) {
   return (
@@ -13,9 +14,9 @@ export function RestaurantPlaceholder({ className = "" }: { className?: string }
   );
 }
 
-export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
+export function RestaurantCard({ restaurant, loggedIn = false, favorite = false, next }: { restaurant: Restaurant; loggedIn?: boolean; favorite?: boolean | null; next?: string }) {
   return (
-    <Link href={`/restaurants/${restaurant.id}`} prefetch={false} data-restaurant-card={restaurant.id} className="group flex h-full min-w-0 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white transition motion-safe:hover:-translate-y-1 hover:border-brand-blue/40 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue">
+    <article className="flex h-full min-w-0 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white transition hover:border-brand-blue/40 hover:shadow-lg"><Link href={`/restaurants/${restaurant.id}`} prefetch={false} data-restaurant-card={restaurant.id} className="group flex min-w-0 flex-1 flex-col focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue">
       <RestaurantPlaceholder className="h-44" />
       <div className="flex flex-1 flex-col p-6">
         <span className="mb-3 w-fit rounded-lg bg-blue-50 px-2.5 py-1 text-xs font-semibold text-link-blue">{restaurant.category}</span>
@@ -24,10 +25,10 @@ export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
         <p className="mt-3 text-sm text-slate-600"><span className="text-slate-500">대표 가격</span> · {formatPrice(restaurant.representativePrice)}</p>
         <p className="mt-2 text-sm leading-6 text-slate-500">{restaurant.address ?? "주소 정보 확인 중"}</p>
         <div className="mt-5 flex items-center justify-between gap-3 border-t border-slate-100 pt-4 text-sm">
-          <span className="text-slate-500">아직 리뷰 없음</span>
+          <span className="text-slate-500">{restaurant.averageRating != null && (restaurant.reviewCount ?? 0) > 0 ? `${restaurant.averageRating.toFixed(1)}점 · 리뷰 ${restaurant.reviewCount}개 · 참여 ${restaurant.reviewerCount}명` : "아직 리뷰 없음"}</span>
           <span aria-hidden="true" className="font-medium text-link-blue">자세히 보기 ↗</span>
         </div>
       </div>
-    </Link>
+    </Link><div className="px-6 pb-6"><FavoriteButton restaurantId={restaurant.id} loggedIn={loggedIn} favorite={favorite} next={next ?? `/restaurants/${restaurant.id}`} /></div></article>
   );
 }

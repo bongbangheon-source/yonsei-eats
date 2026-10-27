@@ -1,0 +1,55 @@
+{
+  "runtime": "v24.22.1",
+  "platform": "win32",
+  "checks": [
+    {
+      "command": "npm.cmd exec -- node --version",
+      "attempt": 1,
+      "exitCode": 0,
+      "durationMs": 5594
+    },
+    {
+      "command": "npm.cmd test",
+      "attempt": 1,
+      "exitCode": 0,
+      "durationMs": 24336
+    },
+    {
+      "command": "npm.cmd run lint",
+      "attempt": 1,
+      "exitCode": 0,
+      "durationMs": 66269
+    },
+    {
+      "command": "npm.cmd run typecheck",
+      "attempt": 1,
+      "exitCode": 0,
+      "durationMs": 11350
+    },
+    {
+      "command": "npm.cmd run build",
+      "attempt": 1,
+      "exitCode": 0,
+      "durationMs": 23861
+    },
+    {
+      "command": "npm.cmd run db",
+      "attempt": 1,
+      "exitCode": 0,
+      "durationMs": 4555
+    },
+    {
+      "command": "npm.cmd run db",
+      "attempt": 2,
+      "exitCode": 0,
+      "durationMs": 3458
+    },
+    {
+      "command": "npm.cmd run db",
+      "attempt": 3,
+      "exitCode": 0,
+      "durationMs": 2860
+    }
+  ],
+  "allPassed": true
+}

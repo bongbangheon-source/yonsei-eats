@@ -8,16 +8,27 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "next typegen && tsc --noEmit",
-    "test": "node --experimental-strip-types --test tests/restaurants.test.mjs",
+    "test": "node --experimental-strip-types --test tests/restaurants.test.mjs tests/repository.test.mjs tests/database.test.mjs tests/auth.test.mjs tests/community.test.mjs tests/community-queries.test.mjs tests/phase4-database.test.mjs tests/maps.test.mjs tests/maps-sdk.test.mjs tests/locations-database.test.mjs",
     "test:http": "node tests/http-smoke.mjs",
-    "test:browser": "node tests/browser-smoke.mjs"
+    "test:auth:http": "node --experimental-strip-types tests/auth-http.mjs",
+    "test:browser": "node tests/browser-smoke.mjs",
+    "db:check": "node --experimental-strip-types scripts/check-supabase.mjs",
+    "db": "npm run db:check",
+    "db:community": "node --experimental-strip-types scripts/check-community.mjs",
+    "db:locations": "node --experimental-strip-types scripts/check-locations.mjs",
+    "seed:generate": "node scripts/generate-seed.mjs",
+    "seed:check": "node scripts/generate-seed.mjs --check"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.118.0",
     "next": "16.4.3",
     "react": "19.3.1",
-    "react-dom": "19.3.1"
+    "react-dom": "19.3.1",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.12",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -28,6 +39,6 @@
     "typescript": "^5"
   },
   "engines": {
-    "node": ">=24.0.0"
+    "node": "24.x"
   }
 }
